@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentes do Escritório</title>
+<script src="https://cdn.jsdelivr.net/npm/marked@14/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --texto: #1d2330; --suave: #5d6677; --borda: #dde1e8;
+    --primaria: #1f5fbf; --primaria-texto: #fff; --usuario: #eaf1fc; --erro: #b42318;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #12151b; --card: #1b2029; --texto: #e6e9ef; --suave: #9aa3b2; --borda: #2c3340;
+            --primaria: #5b93e6; --primaria-texto: #0d1117; --usuario: #1e2a3d; --erro: #f97066; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--texto); }
+  .app { display: grid; grid-template-columns: 300px 1fr; height: 100vh; }
+  aside { border-right: 1px solid var(--borda); background: var(--card); overflow-y: auto; padding: 16px; }
+  aside h1 { font-size: 17px; margin: 0 0 4px; }
+  aside p.sub { margin: 0 0 12px; color: var(--suave); font-size: 13px; }
+  input[type=search], input[type=password], textarea, select {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--borda); border-radius: 8px;
+    background: var(--bg); color: var(--texto); font: inherit;
+  }
+  .frente { margin-top: 14px; }
+  .frente h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--suave); margin: 0 0 4px; }
+  .agente { display: block; width: 100%; text-align: left; border: 0; background: none; color: var(--texto);
+            padding: 6px 8px; border-radius: 6px; cursor: pointer; font: inherit; }
+  .agente:hover { background: var(--bg); }
+  .agente.ativo { background: var(--primaria); color: var(--primaria-texto); }
+  main { display: flex; flex-direction: column; height: 100vh; min-width: 0; }
+  header { padding: 14px 20px; border-bottom: 1px solid var(--borda); background: var(--card); }
+  header h2 { margin: 0; font-size: 18px; }
+  header p { margin: 2px 0 0; color: var(--suave); font-size: 14px; }
+  #conversa { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .msg { max-width: 900px; padding: 12px 16px; border-radius: 10px; background: var(--card); border: 1px solid var(--borda); overflow-x: auto; }
+  .msg.usuario { align-self: flex-end; background: var(--usuario); white-space: pre-wrap; }
+  .msg.erro { color: var(--erro); }
+  .msg table { border-collapse: collapse; margin: 8px 0; }
+  .msg th, .msg td { border: 1px solid var(--borda); padding: 4px 8px; text-align: left; }
+  .msg .meta { font-size: 12px; color: var(--suave); margin-top: 8px; }
+  form { border-top: 1px solid var(--borda); background: var(--card); padding: 12px 20px; display: grid; gap: 8px; }
+  .linha { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  button.enviar { background: var(--primaria); color: var(--primaria-texto); border: 0; border-radius: 8px; padding: 9px 18px; font: inherit; font-weight: 600; cursor: pointer; }
+  button.secundario { background: none; border: 1px solid var(--borda); color: var(--texto); border-radius: 8px; padding: 8px 12px; font: inherit; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: wait; }
+  .exemplo { font-size: 13px; color: var(--suave); cursor: pointer; text-decoration: underline dotted; }
+  #menu { display: none; }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; }
+    aside { display: none; position: fixed; inset: 0; z-index: 2; }
+    aside.aberto { display: block; }
+    #menu { display: inline-block; }
+    #conversa, form, header { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside id="lateral">
+    <h1>Agentes do Escritório</h1>
+    <p class="sub" id="total">Carregando…</p>
+    <input type="search" id="filtro" placeholder="Buscar agente…">
+    <div id="lista"></div>
+    <div class="frente">
+      <h2>Token de acesso</h2>
+      <input type="password" id="token" placeholder="Opcional (API_TOKEN)">
+    </div>
+  </aside>
+  <main>
+    <header>
+      <button id="menu" class="secundario" type="button">☰ Agentes</button>
+      <h2 id="titulo">Escolha um agente</h2>
+      <p id="descricao">Selecione um agente na lista ao lado para começar.</p>
+    </header>
+    <div id="conversa"></div>
+    <form id="form">
+      <textarea id="mensagem" rows="3" placeholder="Descreva o pedido para o agente…" required></textarea>
+      <div class="linha">
+        <input type="file" id="arquivos" multiple accept=".xml,.ofx,.pdf,.csv,.txt,.json,.png,.jpg,.jpeg,.webp">
+        <span style="flex:1"></span>
+        <button type="button" class="secundario" id="nova">Nova conversa</button>
+        <button type="submit" class="enviar" id="enviar">Enviar</button>
+      </div>
+    </form>
+  </main>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+let agentes = [], frentes = {}, atual = null, historico = [];
+
+try { $('token').value = localStorage.getItem('apiToken') || ''; } catch {}
+$('token').addEventListener('change', () => { try { localStorage.setItem('apiToken', $('token').value); } catch {} });
+$('menu').onclick = () => $('lateral').classList.add('aberto');
+
+function renderizarLista() {
+  const termo = $('filtro').value.toLowerCase();
+  const lista = $('lista');
+  lista.innerHTML = '';
+  for (const [chave, nome] of Object.entries(frentes)) {
+    const doGrupo = agentes.filter((a) => a.frente === chave && (a.nome + a.descricao).toLowerCase().includes(termo));
+    if (!doGrupo.length) continue;
+    const bloco = document.createElement('div');
+    bloco.className = 'frente';
+    bloco.innerHTML = `<h2>${nome} (${doGrupo.length})</h2>`;
+    for (const a of doGrupo) {
+      const b = document.createElement('button');
+      b.className = 'agente' + (atual && atual.id === a.id ? ' ativo' : '');
+      b.textContent = a.nome;
+      b.title = a.descricao;
+      b.onclick = () => selecionar(a);
+      bloco.appendChild(b);
+    }
+    lista.appendChild(bloco);
+  }
+}
+
+function selecionar(a) {
+  atual = a;
+  historico = [];
+  $('conversa').innerHTML = '';
+  $('titulo').textContent = a.nome;
+  $('descricao').innerHTML = '';
+  $('descricao').append(a.descricao + ' ');
+  const ex = document.createElement('span');
+  ex.className = 'exemplo';
+  ex.textContent = 'Usar exemplo';
+  ex.onclick = () => { $('mensagem').value = a.exemplo; $('mensagem').focus(); };
+  $('descricao').appendChild(ex);
+  $('lateral').classList.remove('aberto');
+  renderizarLista();
+}
+
+function adicionar(tipo, conteudo, meta) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + tipo;
+  if (tipo === 'agente') div.innerHTML = DOMPurify.sanitize(marked.parse(conteudo || '(sem resposta)'));
+  else div.textContent = conteudo;
+  if (meta) { const m = document.createElement('div'); m.className = 'meta'; m.textContent = meta; div.appendChild(m); }
+  $('conversa').appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return div;
+}
+
+const lerBase64 = (arquivo) => new Promise((ok, falha) => {
+  const r = new FileReader();
+  r.onload = () => ok(String(r.result).split(',')[1] || '');
+  r.onerror = falha;
+  r.readAsDataURL(arquivo);
+});
+
+$('form').onsubmit = async (ev) => {
+  ev.preventDefault();
+  if (!atual) return alert('Escolha um agente primeiro.');
+  const mensagem = $('mensagem').value.trim();
+  if (!mensagem) return;
+  const arquivos = [...$('arquivos').files];
+  const anexos = await Promise.all(arquivos.map(async (f) => ({ nome: f.name, tipo: f.type, conteudo_base64: await lerBase64(f) })));
+
+  adicionar('usuario', mensagem + (arquivos.length ? `\n📎 ${arquivos.map((f) => f.name).join(', ')}` : ''));
+  const aguardando = adicionar('agente', '_Trabalhando…_');
+  $('enviar').disabled = true;
+  $('mensagem').value = '';
+  $('arquivos').value = '';
+
+  try {
+    const r = await fetch(`/api/agentes/${atual.id}/executar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-token': $('token').value },
+      body: JSON.stringify({ mensagem, anexos, historico }),
+    });
+    const dados = await r.json();
+    aguardando.remove();
+    if (!r.ok) throw new Error(dados.error || r.statusText);
+    historico = dados.historico;
+    const usadas = dados.ferramentas_usadas.map((f) => f.ferramenta);
+    adicionar('agente', dados.resposta,
+      (usadas.length ? `Ferramentas: ${[...new Set(usadas)].join(', ')} · ` : '') +
+      `${dados.uso.input_tokens + dados.uso.output_tokens} tokens` + (dados.status !== 'concluido' ? ` · ${dados.status}` : ''));
+  } catch (e) {
+    aguardando.remove();
+    adicionar('erro', 'Erro: ' + e.message);
+  } finally {
+    $('enviar').disabled = false;
+  }
+};
+
+$('nova').onclick = () => atual && selecionar(atual);
+$('filtro').oninput = renderizarLista;
+
+fetch('/api/agentes').then((r) => r.json()).then((d) => {
+  agentes = d.agentes; frentes = d.frentes;
+  $('total').textContent = `${d.total} agentes em ${Object.keys(frentes).length} frentes`;
+  renderizarLista();
+}).catch(() => { $('total').textContent = 'Não consegui carregar os agentes.'; });
+</script>
+</body>
+</html>
