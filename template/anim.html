@@ -1,0 +1,153 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Anton;src:url(node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2)}
+@font-face{font-family:Mont;font-weight:800;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:Mont;font-weight:600;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-600-normal.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0a1222}
+body{font-family:Mont,sans-serif;color:#fff;position:relative}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.bg{position:absolute;inset:0;background:radial-gradient(1200px 900px at 50% 45%,#16233d 0%,#0a1222 60%,#060b16 100%)}
+.lines{position:absolute;inset:-200px;background:repeating-linear-gradient(115deg,rgba(212,175,95,.0) 0 60px,rgba(212,175,95,.07) 60px 62px)}
+.gold{color:#e8c36a}
+.red{color:#ff3b3b}
+.anton{font-family:Anton,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.center{left:0;right:0;text-align:center}
+.stamp{border:14px solid #ff3b3b;color:#ff3b3b;border-radius:24px;padding:10px 40px;font-family:Anton;font-size:120px;text-transform:uppercase;background:rgba(10,18,34,.55)}
+.chip{display:inline-flex;align-items:center;justify-content:center;width:300px;height:150px;margin:14px;border-radius:28px;background:#121d33;border:4px solid #2a3a5c;font-family:Anton;font-size:64px;color:#8b97ad;position:relative}
+.chip.on{background:#e8c36a;border-color:#e8c36a;color:#0a1222}
+.chip .ck{position:absolute;right:-16px;top:-16px;width:62px;height:62px;border-radius:50%;background:#22c55e;color:#fff;font-size:44px;display:flex;align-items:center;justify-content:center;font-family:Mont;font-weight:800}
+#topbar{position:absolute;top:70px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:22px}
+#topbar img{width:96px}
+#topbar .t1{font-family:Mont;font-weight:800;font-size:42px;letter-spacing:3px;line-height:1}
+#topbar .t2{font-family:Mont;font-weight:800;font-size:30px;letter-spacing:6px;color:#e8c36a;line-height:1.3}
+#wa{position:absolute;bottom:90px;left:90px;right:90px;height:120px;border-radius:60px;background:#1fa855;display:flex;align-items:center;justify-content:center;gap:24px;font-family:Mont;font-weight:800;font-size:52px;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#wa svg{width:62px;height:62px}
+#prog{position:absolute;top:0;left:0;height:12px;background:linear-gradient(90deg,#b8862f,#ffd77a)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+</style></head><body>
+<!-- S0 HOOK -->
+<div class="scene" id="s0">
+  <img id="s0img" class="abs" src="foto_dark.png" style="left:0;top:420px;width:1080px;height:1920px;object-fit:cover;transform-origin:30% 30%">
+  <div class="abs" style="left:0;right:0;top:400px;height:200px;background:linear-gradient(#0a1222,rgba(10,18,34,0))"></div>
+  <div class="abs" style="left:0;right:0;bottom:0;height:760px;background:linear-gradient(rgba(10,18,34,0),#0a1222 60%)"></div>
+  <div id="s0a" class="abs center anton" style="top:110px;font-size:230px;color:#ffd24a;text-shadow:0 8px 0 #9a1b1b">PARA TUDO!</div>
+  <div id="s0b" class="abs center" style="top:1300px;font-weight:800;font-size:84px;line-height:1.15">MEI: <span class="gold">1 boleto atrasado</span><br>e é</div>
+  <div id="s0c" class="abs center" style="top:1500px"><span class="stamp">PERDÃO CANCELADO</span></div>
+</div>
+<!-- S1 100% -->
+<div class="scene" id="s1"><div class="bg"></div><div class="lines" id="s1l"></div>
+  <div id="s1tag" class="abs center" style="top:420px;font-weight:800;font-size:46px;letter-spacing:6px;color:#e8c36a">LEI COMPLEMENTAR 238/2026</div>
+  <div id="s1n" class="abs center anton gold" style="top:520px;font-size:400px;line-height:1">0%</div>
+  <div id="s1a" class="abs center" style="top:1010px;font-weight:800;font-size:84px;line-height:1.15">do INSS do MEI<br><span class="gold">PERDOADO</span></div>
+  <div id="s1b" class="abs center" style="top:1270px;font-weight:600;font-size:50px;color:#b9c3d6">vencido até 13/10/2026</div>
+</div>
+<!-- S2 boleto atrasado -->
+<div class="scene" id="s2"><div class="bg"></div><div class="lines"></div>
+  <div id="s2t" class="abs center anton" style="top:330px;font-size:150px;color:#ffd24a">PEGADINHA!</div>
+  <div id="s2card" class="abs" style="left:150px;top:600px;width:780px;height:560px;border-radius:36px;background:#f4f1ea;color:#0a1222;padding:50px 56px">
+    <div style="font-weight:800;font-size:44px;letter-spacing:3px;color:#5b6475">DAS-MEI</div>
+    <div style="height:6px;background:#0a1222;margin:22px 0 30px"></div>
+    <div style="font-weight:600;font-size:40px;color:#5b6475">Vencimento</div>
+    <div style="font-weight:800;font-size:76px">dia 20</div>
+    <div style="margin-top:40px;display:flex;gap:10px">${'' }<div style="flex:1;height:70px;background:repeating-linear-gradient(90deg,#0a1222 0 6px,transparent 6px 12px,#0a1222 12px 16px,transparent 16px 26px)"></div></div>
+  </div>
+  <div id="s2s" class="abs center" style="top:800px"><span class="stamp" style="font-size:150px;background:rgba(255,255,255,.75)">ATRASADO</span></div>
+  <div id="s2b" class="abs center" style="top:1280px;font-weight:800;font-size:74px;line-height:1.2">o perdão <span class="red">CAI</span><br>e a dívida <span class="red">VOLTA</span></div>
+</div>
+<!-- S3 calendario -->
+<div class="scene" id="s3"><div class="bg"></div><div class="lines"></div>
+  <div id="s3t" class="abs center" style="top:330px;font-weight:800;font-size:82px;line-height:1.15">Pague <span class="gold">TODO DAS</span><br>em dia até</div>
+  <div id="s3j" class="abs center anton gold" style="top:560px;font-size:170px">JULHO/2027</div>
+  <div id="s3g" class="abs center" style="top:800px;width:1080px;padding:0 60px"></div>
+  <div id="s3b" class="abs center" style="top:1480px;font-weight:600;font-size:40px;color:#b9c3d6;line-height:1.35">Portaria Conjunta 740/2026: jan a jun/2027<br>Margem de segurança: até julho</div>
+</div>
+<!-- S4 ICMS ISS -->
+<div class="scene" id="s4"><div class="bg"></div><div class="lines"></div>
+  <div id="s4t" class="abs center anton" style="top:380px;font-size:150px;color:#ffd24a">CUIDADO!</div>
+  <div class="abs center" style="top:660px">
+    <span id="s4a" style="display:inline-block;position:relative;font-family:Anton;font-size:190px;margin:0 40px">ICMS<i id="s4al" style="position:absolute;left:-10px;top:52%;height:22px;background:#ff3b3b;width:0;transform:rotate(-8deg)"></i></span>
+    <span id="s4b" style="display:inline-block;position:relative;font-family:Anton;font-size:190px;margin:0 40px">ISS<i id="s4bl" style="position:absolute;left:-10px;top:52%;height:22px;background:#ff3b3b;width:0;transform:rotate(-8deg)"></i></span>
+  </div>
+  <div id="s4c" class="abs center" style="top:1060px;font-weight:800;font-size:92px;line-height:1.15"><span class="red">NÃO</span> são<br>perdoados</div>
+  <div id="s4d" class="abs center" style="top:1350px;font-weight:600;font-size:46px;color:#b9c3d6">continuam no boleto do MEI</div>
+</div>
+<!-- S5 CTA -->
+<div class="scene" id="s5">
+  <img class="abs" src="foto_dark.png" style="left:0;top:560px;width:1080px;height:1920px;object-fit:cover">
+  <div class="abs" style="left:0;right:0;top:540px;height:200px;background:linear-gradient(#0a1222,rgba(10,18,34,0))"></div>
+  <div class="abs" style="left:0;right:0;bottom:0;height:640px;background:linear-gradient(rgba(10,18,34,0),#0a1222 60%)"></div>
+  <div id="s5a" class="abs center" style="top:110px;font-weight:800;font-size:70px">Comenta</div>
+  <div id="s5b" class="abs center anton" style="top:180px;font-size:280px;color:#ffd24a;line-height:1.05">DAS</div>
+  <div id="s5c" class="abs center" style="top:500px;font-weight:600;font-size:48px;color:#d6dbe6">e receba o calendário dos boletos</div>
+  <div id="s5d" class="abs center" style="top:1520px;font-weight:800;font-size:60px;line-height:1.2">ou fala comigo<br>no <span style="color:#3ddc7c">WhatsApp</span> 👇</div>
+</div>
+<!-- persistent -->
+<div id="topbar"><img src="logo_icon.png"><div><div class="t1">CLAUDEL</div><div class="t2">CONTADOR</div></div></div>
+<div id="wa"><svg viewBox="0 0 24 24" fill="#fff"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>(75) 98149-4989</div>
+<div id="prog"></div><div id="flash"></div>
+<script>
+const D = window.DUR; // durations
+const T0 = D.reduce((a,_,i)=>(a.push(i?a[i-1]+D[i-1]:0),a),[]);
+const TOTAL = D.reduce((a,b)=>a+b,0);
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);           // ease out
+const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const pop=(el,t,st,dur=.35,from=2.2)=>{const p=cl((t-st)/dur);el.style.opacity=p>0?Math.min(1,p*3):0;const s=from+(1-from)*back(p);el.style.transform=`scale(${s})`};
+const slideUp=(el,t,st,dur=.4,dy=80)=>{const p=eo((t-st)/dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`};
+const shake=(t,st,dur=.35,amp=18)=>{const p=(t-st)/dur;if(p<0||p>1)return'';const a=amp*(1-p);return `translate(${Math.sin(t*90)*a}px,${Math.cos(t*77)*a}px)`};
+// build calendar
+const months=['JAN','FEV','MAR','ABR','MAI','JUN','JUL'];
+$('s3g').innerHTML=months.map((m,i)=>`<span class="chip" id="c${i}">${m}<span class="ck" style="opacity:0">✓</span></span>`).join('');
+window.render=function(t){
+  let flash=0;
+  for(let i=0;i<D.length;i++){const s=$('s'+i);const lt=t-T0[i];const on=lt>=0&&lt<D[i];s.style.opacity=on?1:0;
+    // quick cross: flash at each cut
+    if(lt>=0&&lt<.12) flash=Math.max(flash,(.12-lt)/.12*(i==0?.9:.35));
+  }
+  $('flash').style.opacity=flash;
+  $('prog').style.width=(t/TOTAL*1080)+'px';
+  const tb=$('topbar');const inPhoto=(t<T0[1]||t>=T0[5]);tb.style.opacity=inPhoto?0:1;
+  // S0
+  let lt=t-T0[0];
+  $('s0img').style.transform=`scale(${1.18-0.12*eo(lt/.6)+0.03*lt/D[0]})`;
+  pop($('s0a'),lt,0,.3,3);$('s0a').style.transform+=' '+shake(lt,.25,.4,22);
+  slideUp($('s0b'),lt,D[0]*.32);
+  { const st=D[0]*.62;pop($('s0c'),lt,st,.28,3.2);$('s0c').style.transform+=` rotate(-6deg) `+shake(lt,st+.22,.35,20);
+  }
+  // S1
+  lt=t-T0[1];
+  slideUp($('s1tag'),lt,0,.35);
+  { const p=eo((lt-.15)/(D[1]*.45)); $('s1n').textContent=Math.round(100*p)+'%'; $('s1n').style.opacity=lt>.1?1:0;
+    const pulse=lt>D[1]*.6?1+0.04*Math.sin((lt-D[1]*.6)*9):1; $('s1n').style.transform=`scale(${pulse})`; }
+  slideUp($('s1a'),lt,D[1]*.35);slideUp($('s1b'),lt,D[1]*.6);
+  $('s1l').style.transform=`translateX(${lt*40}px)`;
+  // S2
+  lt=t-T0[2];
+  pop($('s2t'),lt,0,.3,2.5);
+  { const p=eo((lt-.1)/.45);const c=$('s2card');c.style.opacity=p;c.style.transform=`translateX(${(1-p)*900}px) rotate(${(1-p)*12-2}deg)`; }
+  { const st=D[2]*.3;pop($('s2s'),lt,st,.25,3);$('s2s').style.transform+=' rotate(-12deg) '+shake(lt,st+.2,.4,24);
+    if(lt>st+.2&&lt<st+.3)flash=Math.max(flash,.25); }
+  slideUp($('s2b'),lt,D[2]*.55);
+  // S3
+  lt=t-T0[3];
+  slideUp($('s3t'),lt,0,.35);pop($('s3j'),lt,.35,.35,2);
+  for(let i=0;i<7;i++){const st=D[3]*.28+i*(D[3]*.45/7);const c=$('c'+i);const on=lt>st;c.classList.toggle('on',on);
+    const p=cl((lt-st)/.25);c.style.transform=`scale(${on?1+.15*Math.sin(p*Math.PI):1})`;c.querySelector('.ck').style.opacity=on?1:0;}
+  slideUp($('s3b'),lt,D[3]*.78);
+  // S4
+  lt=t-T0[4];
+  pop($('s4t'),lt,0,.3,2.5);$('s4t').style.transform+=' '+shake(lt,.25,.35,16);
+  slideUp($('s4a'),lt,.15);slideUp($('s4b'),lt,.3);
+  $('s4al').style.width=(eo((lt-D[4]*.35)/.3)*400)+'px';$('s4bl').style.width=(eo((lt-D[4]*.45)/.3)*290)+'px';
+  slideUp($('s4c'),lt,D[4]*.5);slideUp($('s4d'),lt,D[4]*.7);
+  // S5
+  lt=t-T0[5];
+  slideUp($('s5a'),lt,0,.3);pop($('s5b'),lt,.15,.35,2.6);
+  if(lt>.6)$('s5b').style.transform=`scale(${1+.06*Math.sin((lt-.6)*7)})`;
+  slideUp($('s5c'),lt,.5);slideUp($('s5d'),lt,D[5]*.5);
+  // WhatsApp bar pulse in CTA
+  const wa=$('wa');const w5=t>=T0[5]&&t-T0[5]>D[5]*.5;wa.style.transform=w5?`scale(${1.08+.05*Math.sin(t*8)})`:'scale(1)';
+};
+</script></body></html>
