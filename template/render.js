@@ -12,7 +12,8 @@ const seg = [
 const AUDIO = 37.07, TAIL = 1.8;
 const w = seg.map(s => s.length + 10);
 const sum = w.reduce((a, b) => a + b, 0);
-const D = w.map(x => AUDIO * x / sum); D[5] += TAIL;
+// DURS='[d0,...,d5]' (segundos por cena, ex.: medidos nas pausas do áudio do dono) tem prioridade
+const D = process.env.DURS ? JSON.parse(process.env.DURS) : w.map(x => AUDIO * x / sum); if (!process.env.DURS) D[5] += TAIL;
 const out = process.argv[2], fps = +process.argv[3] || 30, only = process.argv[4];
 (async () => {
   const b = await chromium.launch();
